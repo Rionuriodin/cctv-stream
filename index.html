@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor CCTV Sukabumi</title>
+    <!-- Library Player Video -->
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <style>
+        body { background: #000; color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 900px; margin: auto; }
+        select { 
+            width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; 
+            margin-bottom: 20px; background: #333; color: white; border: 1px solid #555;
+        }
+        .video-box { background: #111; border: 2px solid #333; border-radius: 10px; overflow: hidden; }
+        h1 { font-size: 20px; margin-bottom: 10px; color: #00ff00; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔴 LIVE CCTV KAB. SUKABUMI</h1>
+    
+    <!-- Dropdown Pilih Kamera -->
+    <select id="pilihKamera" onchange="putarVideo()">
+        <option value="">-- Pilih Lokasi CCTV --</option>
+        <option value="/hls/exittol/stream.m3u8">Exit Tol</option>
+        <option value="/hls/pasarcibadak/stream.m3u8">Pasar Cibadak</option>
+        <option value="/hls/masjidcibadak/stream.m3u8">Masjid Cibadak</option>
+        <option value="/hls/cikembang/stream.m3u8">Cikembang</option>
+        <option value="/hls/cisaat/stream.m3u8">Cisaat</option>
+        <option value="/hls/sukaraja/stream.m3u8">Sukaraja</option>
+        <option value="/hls/tenjoayu/stream.m3u8">Tenjo Ayu</option>
+        <option value="/hls/lpmratu/stream.m3u8">LPM Ratu</option>
+        <option value="/hls/pangleseran/stream.m3u8">Pangleseran</option>
+        <option value="/hls/cicurug/stream.m3u8">Cicurug</option>
+        <option value="/hls/karanghawu/stream.m3u8">Karang Hawu</option>
+        <option value="/hls/cibolang/stream.m3u8">Cibolang</option>
+        <option value="/hls/pedes/stream.m3u8">Pedes</option>
+        <option value="/hls/batusapi/stream.m3u8">Batu Sapi</option>
+        <option value="/hls/parungkuda/stream.m3u8">Parungkuda</option>
+        <option value="/hls/pasarikan/stream.m3u8">Pasar Ikan</option>
+        <option value="/hls/kadudampit/stream.m3u8">Kadudampit</option>
+        <option value="/hls/exittol_ai/stream.m3u8">Exit Tol AI</option>
+        <option value="/hls/sukalarang/stream.m3u8">Sukalarang</option>
+    </select>
+
+    <div class="video-box">
+        <video id="my-player" class="video-js vjs-default-skin vjs-16-9" controls preload="auto">
+            <source src="" type="application/x-mpegURL">
+        </video>
+    </div>
+    <p style="font-size: 12px; color: #888; margin-top: 15px;">Sumber: Dishub Kab. Sukabumi</p>
+</div>
+
+<!-- Script Player -->
+<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+<script>
+    const BASE_URL = "https://cctv-dishub.sukabumikab.go.id";
+    var player = videojs('my-player');
+
+    function putarVideo() {
+        var path = document.getElementById("pilihKamera").value;
+        if (path) {
+            player.src({
+                src: BASE_URL + path,
+                type: 'application/x-mpegURL'
+            });
+            player.play();
+        }
+    }
+</script>
+
+</body>
+</html>
