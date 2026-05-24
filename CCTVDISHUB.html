@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCTV Sukabumi Premium</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body { background: #000; color: white; font-family: sans-serif; text-align: center; margin: 0; padding: 10px; }
+        select { width: 100%; padding: 15px; margin: 10px 0; border-radius: 5px; font-size: 16px; background: #222; color: #fff; border: 1px solid #444; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #111; border: 1px solid #333; }
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .error-msg { color: #ff4444; margin: 10px; font-size: 14px; display: none; }
+    </style>
+</head>
+<body>
+
+    <h3>🔴 MONITORING CCTV</h3>
+
+    <select id="camSelect">
+        <option value="">-- PILIH KAMERA --</option>
+        <option value="https://cctv-dishub.sukabumikab.go.id/hls/exittol/stream.m3u8">EXIT TOL</option>
+        <option value="https://cctv-dishub.sukabumikab.go.id/hls/pasarcibadak/stream.m3u8">PASAR CIBADAK</option>
+        <option value="https://cctv-dishub.sukabumikab.go.id/hls/masjidcibadak/stream.m3u8">MASJID CIBADAK</option>
+        <option value="https://cctv-dishub.sukabumikab.go.id/hls/cikembang/stream.m3u8">CIKEMBANG</option>
+        <option value="https://cctv-dishub.sukabumikab.go.id/hls/cisaat/stream.m3u8">CISAAT</option>
+        <option value="https://cctv-dishub.sukabumikab.go.id/hls/sukaraja/stream.m3u8">SUKARAJA</option>
+    </select>
+
+    <div class="video-container">
+        <video id="video" controls autoplay playsinline></video>
+    </div>
+    
+    <div id="error" class="error-msg">Gagal memuat video. Server Dishub mungkin sedang sibuk/down.</div>
+
+    <script>
+        const video = document.getElementById('video');
+        const camSelect = document.getElementById('camSelect');
+        const errorMsg = document.getElementById('error');
+        const hls = new Hls();
+
+        camSelect.addEventListener('change', function() {
+            const url = this.value;
+            errorMsg.style.display = 'none';
+
+            if (url) {
+                // Kita coba pakai Allorigins Proxy (Lebih stabil)
+                const proxiedUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+
+                if (Hls.isSupported()) {
+                    hls.loadSource(proxiedUrl);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                        video.play();
+                    });
+                    hls.on(Hls.Events.ERROR, function(event, data) {
+                        if (data.fatal) {
+                            errorMsg.style.display = 'block';
+                        }
+                    });
+                } 
+                // Untuk browser Safari/iOS yang mendukung HLS secara native
+                else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = url;
+                    video.addEventListener('loadedmetadata', function() {
+                        video.play();
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
